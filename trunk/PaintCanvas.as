@@ -239,7 +239,7 @@
 		{		
 			
 				
-			removeBlob(e.ID);			
+			//removeBlob(e.ID);			
 				
 			e.stopPropagation();				
 				
