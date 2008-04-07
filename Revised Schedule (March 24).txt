@@ -1,0 +1,8 @@
+•	March 31, 2008: First iteration is over. The GUI for the paint program will be finished, including basic design and layout (drawing area, color palette, and tool bar). Basic drawing ( Use case UPaint ),  color selecting ( UChange ), and clearing the canvas ( UClear ) will be completed and working by this point. Materials to build the hardware components will have been acquired and building started. Required hardware will be working and used for
+testing; input from the touch screen will be implemented in the drawing application. Product tests will have been planned out and initial testing started.
+
+•	April 7, 2008: Second iteration is over. More drawing tools (USave, ULoad, USelect, UText) will be working. Preliminary test results will be available, and bugs will be recorded for later fixing. The product will also be readied for its beta release. 
+
+•	April 14, 2008: Remaining use cases (UZoom, ULine, UFill, UShapes) will be finished and the program is in the process of being bug tested. Beta release; Construction deliverables due, including interaction diagrams, a static class diagram, and a testing plan with any preliminary test results. 
+
+•	April 28, 2008: Final release; Transition deliverables due, including documentation, final test results, documentation of best practices used, and peer reviews from each team member. Projects will have been presented by this point.
