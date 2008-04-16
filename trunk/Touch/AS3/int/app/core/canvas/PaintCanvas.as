@@ -261,13 +261,25 @@
 		
 		function fillFunction(r:Color, g:Color, b:Color, x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
-			var width:Number = Math.abs(x2-x1);
-			var height:Number = Math.abs(y2-y1);
-			var rect1:Rectangle = new Rectangle(x1, y1, width, height);
+			var w:Number = Math.abs(x2-x1);
+			var h:Number = Math.abs(y2-y1);
+			var rect:Rectangle = new Rectangle(x1, y1, w, h);
 			var color:uint = new ColorTransform(r, g, b);
-			paintBmpData.fillRect(rect1,color);
+			paintBmpData.fillRect(rect,color);
 		}
 		
+		function makeSquare(r:Color, g:Color, b:Color, x1:Number, y1:Number, x2:Number, y2:Number):void
+		{
+			var w:Number = Math.abs(x2-x1);
+			var h:Number = Math.abs(y2-y1);
+			if ( w > h )
+				h = w;
+			else
+				w = h;
+			var rect:Rectangle = new Rectangle(x1,y1, w, h);
+			var color:uint = new ColorTransform(r, g, b);
+			paintBmpData.fillRect(rect,color);
+		}
 		
 		public function downEvent(e:TouchEvent):void
 		{		
