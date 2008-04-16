@@ -43,7 +43,8 @@
 		private var colorButton_6:Sprite;
 		private var colorButton_7:Sprite;		
 		private var colorButton_8:Sprite;	
-		private var colorButton_9:Sprite;		
+		private var colorButton_9:Sprite;
+		private var fillButton:Sprite;
 		
 		private var bInit:Boolean = false;
 		
@@ -93,7 +94,8 @@
 			 var colorButton_7:Sprite = new Sprite();		
 			 var colorButton_8:Sprite = new Sprite();	
 			 var colorButton_9:Sprite = new Sprite();	
- 			 
+ 			 var fillButton:Sprite = new Sprite();
+			 
 			colorButton_0.graphics.beginFill(0x000000);
 			colorButton_0.graphics.drawRoundRect(0, 0, 70, 50,6);			
 			colorButton_0.y = 10;
@@ -144,6 +146,11 @@
 			colorButton_9.y = 505;	
 			colorButton_9.x = 5;
 			
+			fillButton.graphics.beginFill(0xFF0066);
+			fillButton.graphics.drawRect(0,0,70,50);
+			fillButton.y = 10;
+			fillButton.x = 10;
+			
 			 var colorWrapper_0:Wrapper = new Wrapper(colorButton_0);
 			 var colorWrapper_1:Wrapper = new Wrapper(colorButton_1);
 			 var colorWrapper_2:Wrapper = new Wrapper(colorButton_2);
@@ -154,7 +161,7 @@
 			 var colorWrapper_7:Wrapper = new Wrapper(colorButton_7);
 			 var colorWrapper_8:Wrapper = new Wrapper(colorButton_8);
 			 var colorWrapper_9:Wrapper = new Wrapper(colorButton_9);	
-			 
+			 var fillWrapper:Wrapper = new Wrapper(fillButton);
 			colorWrapper_0.addEventListener(MouseEvent.CLICK, function(){paintBmpData.fillRect(paintBmpData.rect,0x00000000);setColor(0.0, 0.0, 0.0);}, false, 0, true);									
 			colorWrapper_1.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.0, 0.0);}, false, 0, true);	
 			colorWrapper_2.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.5, 0.0);}, false, 0, true);									
@@ -165,7 +172,8 @@
 			colorWrapper_7.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(0.5, 0.0, 0.5);}, false, 0, true);									
 			colorWrapper_8.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.0, 1.0);}, false, 0, true);
 			colorWrapper_9.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 1.0, 1.0);}, false, 0, true);
-			
+			fillWrapper.addEventListener(MouseEvent.CLICK, fillFunction(), false, 0, true);
+
 			this.addEventListener(Event.ENTER_FRAME, this.update, false, 0, true);			
 			paintBmp = new Bitmap(paintBmpData);
 			
@@ -249,6 +257,15 @@
 			}
 			
 			//paintBmpData.applyFilter(paintBmpData, paintBmpData.rect, new Point(), filter2);
+		}
+		
+		function fillFunction(r:Color, g:Color, b:Color, x1:Number, y1:Number, x2:Number, y2:Number):void
+		{
+			var width:Number = Math.abs(x2-x1);
+			var height:Number = Math.abs(y2-y1);
+			var rect1:Rectangle = new Rectangle(x1, y1, width, height);
+			var color:uint = new ColorTransform(r, g, b);
+			paintBmpData.fillRect(rect1,color);
 		}
 		
 		
