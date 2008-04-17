@@ -7,7 +7,9 @@
 	import flash.events.*;
 	import flash.net.*;
 	import flash.events.*;	
-	import flash.geom.*;		
+	import flash.geom.*;
+// Logan: April 16
+	import flash.utils.ByteArray;
 		
 	import app.core.element.Wrapper;
    
@@ -24,6 +26,8 @@
 		private var m_stage:Stage;		
 	
 		private var paintBmpData:BitmapData;
+// Logan: April 16
+		private var paintBmpData_Holder:BitmapData;
 		private var paintBmpData2:BitmapData;		
 		private var buffer:BitmapData;		
 		private var paintBmp:Bitmap;
@@ -45,6 +49,7 @@
 		private var colorButton_8:Sprite;	
 		private var colorButton_9:Sprite;
 		private var fillButton:Sprite;
+		private var saveButton:Sprite;
 		
 		private var bInit:Boolean = false;
 		
@@ -65,6 +70,8 @@
 			
 			blobs = new Array();
 			paintBmpData = new BitmapData(m_stage.stageWidth, m_stage.stageHeight, true, 0x00000000);
+// Logan: April 16
+			paintBmpData_Holder = new BitmapData(m_stage.stageWidth, m_stage.stageHeight, true, 0x00000000);
 			
 			brush = new Sprite();
 			brush.graphics.beginFill(0xFFFFFF);
@@ -95,6 +102,8 @@
 			 var colorButton_8:Sprite = new Sprite();	
 			 var colorButton_9:Sprite = new Sprite();	
  			 var fillButton:Sprite = new Sprite();
+// Logan: April 16			 
+			 var saveButton:Sprite = new Sprite();
 			 
 			colorButton_0.graphics.beginFill(0x000000);
 			colorButton_0.graphics.drawRoundRect(0, 0, 70, 50,6);			
@@ -151,6 +160,12 @@
 			fillButton.y = 10;
 			fillButton.x = 10;
 			
+// Logan: April 16
+			saveButton.graphics.beginFill(0xc, 
+			saveButton.graphic.drawRect(0,0,70,
+			saveButton.y = 10;
+			saveButton.x = 10;
+			
 			 var colorWrapper_0:Wrapper = new Wrapper(colorButton_0);
 			 var colorWrapper_1:Wrapper = new Wrapper(colorButton_1);
 			 var colorWrapper_2:Wrapper = new Wrapper(colorButton_2);
@@ -162,6 +177,7 @@
 			 var colorWrapper_8:Wrapper = new Wrapper(colorButton_8);
 			 var colorWrapper_9:Wrapper = new Wrapper(colorButton_9);	
 			 var fillWrapper:Wrapper = new Wrapper(fillButton);
+			 var saveWrappern:Wrapper = new Wrapper(saveButton);
 			colorWrapper_0.addEventListener(MouseEvent.CLICK, function(){paintBmpData.fillRect(paintBmpData.rect,0x00000000);setColor(0.0, 0.0, 0.0);}, false, 0, true);									
 			colorWrapper_1.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.0, 0.0);}, false, 0, true);	
 			colorWrapper_2.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.5, 0.0);}, false, 0, true);									
@@ -173,6 +189,8 @@
 			colorWrapper_8.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 0.0, 1.0);}, false, 0, true);
 			colorWrapper_9.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");setColor(1.0, 1.0, 1.0);}, false, 0, true);
 			fillWrapper.addEventListener(MouseEvent.CLICK, fillFunction(), false, 0, true);
+// Logan: April 16
+			saveWrapper.addEventListener(MouseEvent.CLICK, save(), false, 0, true);
 
 			this.addEventListener(Event.ENTER_FRAME, this.update, false, 0, true);			
 			paintBmp = new Bitmap(paintBmpData);
@@ -234,6 +252,43 @@
 			}
 		}
 		
+		function saveBmp():void
+		{
+			var rect:Rectangle = new Rectangle(0, 0, m_stage.stageWidth, m_stage_Height);
+			var bytes:ByteArray = paintBmpData.getPixels(rect);
+		}
+		
+		function loadBmp():void
+		{
+			bytes.position = 0;
+			paintBmpData_Holder.setPixels(rect, byes);
+			
+			var bm1:Bitmap = new Bitmap(paintBmpData);
+			addChild(bm1);
+			var bm2:Bitmap = new Bitmap(paintBmpData_Holder);
+			addChild(bm2);
+			bm2.x = m_stage.stageWidth + 10;
+		}
+		
+// Logan: April 16
+		function saveBmp():void
+		{
+			var rect:Rectangle = new Rectangle(0, 0, m_stage.stageWidth, m_stage_Height);
+			var bytes:ByteArray = paintBmpData.getPixels(rect);
+		}
+		
+		function loadBmp():void
+		{
+			bytes.position = 0;
+			paintBmpData_Holder.setPixels(rect, byes);
+			
+			var bm1:Bitmap = new Bitmap(paintBmpData);
+			addChild(bm1);
+			var bm2:Bitmap = new Bitmap(paintBmpData_Holder);
+			addChild(bm2);
+			bm2.x = m_stage.stageWidth + 10;
+		}
+		
 		function update(e:Event):void
 		{
 			var pt = new Point(0,0);
@@ -261,25 +316,13 @@
 		
 		function fillFunction(r:Color, g:Color, b:Color, x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
-			var w:Number = Math.abs(x2-x1);
-			var h:Number = Math.abs(y2-y1);
-			var rect:Rectangle = new Rectangle(x1, y1, w, h);
+			var width:Number = Math.abs(x2-x1);
+			var height:Number = Math.abs(y2-y1);
+			var rect1:Rectangle = new Rectangle(x1, y1, width, height);
 			var color:uint = new ColorTransform(r, g, b);
-			paintBmpData.fillRect(rect,color);
+			paintBmpData.fillRect(rect1,color);
 		}
 		
-		function makeSquare(r:Color, g:Color, b:Color, x1:Number, y1:Number, x2:Number, y2:Number):void
-		{
-			var w:Number = Math.abs(x2-x1);
-			var h:Number = Math.abs(y2-y1);
-			if ( w > h )
-				h = w;
-			else
-				w = h;
-			var rect:Rectangle = new Rectangle(x1,y1, w, h);
-			var color:uint = new ColorTransform(r, g, b);
-			paintBmpData.fillRect(rect,color);
-		}
 		
 		public function downEvent(e:TouchEvent):void
 		{		
