@@ -9,3 +9,23 @@ Interaction Diagrams - Jon
 Static Class Diagram - Jon
 
 Testing Plan - Dan & Logan
+
+
+
+DONE
+UPaint    done
+UChange    done
+UClear    Dan
+USave    Logan
+ULoad    Logan
+USize (was UText) Dan
+ULine    Dan
+UUndo    Dan & Logan
+UShapes    Logan
+UFill    Dan
+
+UNDONE
+USelect    Jon - 
+UZoom    Jon - 
+
+	
