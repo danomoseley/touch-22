@@ -1,0 +1,39 @@
+Project Status Report - Danielle
+
+This is a summary of the state of the project. It should include an updated list of issues encountered thus far. For each issue, include the a brief summary of the issue, the person responsible for resolving it, and what measures they are to take. Also include any outstanding risks and the impact it can have on the project.
+
+
+
+Contribution Summary - Dan & Logan
+
+A listing of how each team member contributed to the specific deliverable. This is to account for each member taking an active role in each aspect of each deliverable.
+
+
+
+Beta Release - ALL
+
+A feature-complete beta release of your product. 80% of your functionality must be completed, matching the 80% use cases you developed in Elaboration. All "Must Have" requirements (or the equivalent) must be completed for Construction. Your preliminary test results will show proof of this. Your submission must include well-commented source code. You must provide a working executable or schedule a demo for the instructors in class. You can also provide a URL to a running server that is available outside the campus firewall. (Basically you must provide a way for the instructors/TAs to easily evaluate and review your working project.)
+
+
+
+Interaction Diagrams - Jon
+
+Interaction diagrams showing how a specific System Sequence Diagram is realized within the beta version of the software. The diagrams must use correct UML notation. provide at least two diagrams to receive credit for this portion of the deliverable. 
+
+
+
+Static Class Diagram - Jon
+
+A comprehensive static class diagram of the project's internal software structure. If necessary you can break this diagram up into parts to make it more readable. The diagram must be valid UML and accurately depict the source code. 
+
+
+
+Testing Plan - Dan & Logan
+
+Submit a comprehensive test plan, test case specification and preliminary test results.
+
+Test Plan: Include details of your your group's testing strategy, quality goals, list of resources used, people doing the testing, testing schedule, and any other details related to the testing effort.
+
+Test Case Spec: Detailed list of procedures your testers should complete to fully test the software. Include interim and end results in each test case.
+
+Test Results: Your test results template filled in with your preliminary results from your Alpha release test. If you automated your testing (great idea!), the testing source code must be submitted to get credit for this. Your preliminary test results should demonstrate which features are completed and which are not.
