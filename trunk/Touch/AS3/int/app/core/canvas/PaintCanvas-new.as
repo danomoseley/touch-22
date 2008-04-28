@@ -17,7 +17,7 @@ package app.core.canvas{
 
 	import app.core.element.Wrapper;
 
-	public dynamic class PaintCanvas extends MovieClip;
+	public dynamic class PaintCanvas extends MovieClip
 	{
 		// Variables, bitmaps, and buttons declaration.
 

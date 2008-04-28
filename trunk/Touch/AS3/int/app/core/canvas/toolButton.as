@@ -4,7 +4,7 @@
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 
-	public dynamic class toolButton extends Sprite;
+	public dynamic class toolButton extends Sprite
 	{
 		public function toolButton(x_coord:int, label_text:String):void {
 			var smallLabelFormat:TextFormat=new TextFormat();
