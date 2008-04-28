@@ -1,8 +1,15 @@
-﻿package app.core.canvas
+﻿/*	Touch 22
+	Software Design & Documentation, RPI
+	Logan Moseley, Dan Moseley, Jon Wu, Danielle Geffert
+	
+	To find code corresponding to a use case, search for the
+	use case name. For example, "USave" for the save function.
+*/
+
+package app.core.canvas
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	// Logan: April 16
+	import flash.display.Bitmap;			// Image handling library.
+	import flash.display.BitmapData;		// Images' data handling library.
 	import flash.utils.ByteArray;
 	import flash.display.*;		
 	import flash.events.*;
@@ -11,7 +18,7 @@
 	import flash.geom.*;		
     import flash.text.TextField;
 		
-	import app.core.element.Wrapper;
+	import app.core.element.Wrapper;		//  Wrapper library for linking buttons with events.
    
     import flash.Math.*;
    
@@ -22,7 +29,9 @@
 
 	public dynamic class PaintCanvas extends MovieClip
 	{
-		private var blobs:Array;		// blobs we are currently interacting with		
+		// Variables, bitmaps, and buttons declaration.
+
+		private var blobs:Array;		// Blobs we are currently interacting with.
 		private var sourceBmp:BitmapData;
 		
 		private var paintBmpData:BitmapData;
@@ -37,13 +46,14 @@
 		private var col:ColorTransform;
 		private var hexColor:uint;
 		
-// 		private var ZoomStatus:int;		//0 or 1 depending on whether the zoom button is being pressed
-//		private var SelectionOn:int;	//0, 1, or 2 depending on the state of the selection process
-//		private var curPt1:Point;
-//		private var curPt2:Point;
+		/* Variables for currently unused use cases Zoom and Selection.
+ 		private var ZoomStatus:int;				// 0 or 1 depending on whether the zoom button is being pressed
+		private var SelectionOn:int;				// 0, 1, or 2 depending on the state of the selection process
+		private var curPt1:Point;
+		private var curPt2:Point;
+		*/
 		
-		
-		// the current status of each tool
+		// The current status of each tool.
 		private var fillMode:Boolean;
 		private var lineMode:Boolean;
 		private var shapeMode:Boolean;
@@ -71,10 +81,12 @@
 		private var backupColor:ColorTransform;
 		private var backupColor2:uint;
 		
-//		private var ZoominButton:Sprite;
-//		private var SelectionButton:Sprite;
+		/* Sprites for currently unused use cases Zoom and Selection.
+		private var ZoominButton:Sprite;
+		private var SelectionButton:Sprite;
+		*/
 
-	    // the toolbar and the individual tool buttons that are within the toolbar
+	    // The toolbar and the individual tool buttons that are within the toolbar.
 		private var toolBar:Sprite;
 		private var saveButton:Sprite;
 		private var loadButton:Sprite;
@@ -86,7 +98,7 @@
 		private var eraseButton:Sprite;
 		private var sampleButton:Sprite;	
 		
-		// the sizebar and size buttons that are within the toolbar
+		// The sizebar and size buttons that are within the toolbar.
 		private var sizeBar:Sprite;
 		private var sizeButton_1:Sprite;
 		private var sizeButton_2:Sprite;
@@ -94,8 +106,8 @@
 		
 		private var bInit:Boolean = false;
 		
-		// constructor
-		public function PaintCanvas():void
+		// paintCanvas constructor. Mode booleans are set here.
+		public function paintCanvas():void
 		{
 			this.addEventListener(Event.ADDED_TO_STAGE, function(){addedToStage();}, false, 0, true);			
 			brushSize = 10;			
@@ -104,18 +116,20 @@
 			lineMode = startSet = false;			
 			eraseMode = false;
 			sampleMode = false;
-//          ZoomStatus = 0;			
-			
 			hexColor=0xFF00FF00;
+			// ZoomStatus = 0;
 		}
 		
+		// Button objects and  buttons' wrappers of touch events' initializations.
+		// Adds wrappers to global workspace object.
+		// This is where all setup occurs.
 		function addedToStage()
 		{
 			if(bInit)
 				return;
 			
 			blobs = new Array();			
-			// initialize the paintBmpData used for the canvas as well as the holder for saving and for undoing
+			// Initialize the paintBmpData used for the canvas as well as the holder for saving and for undoing
 			paintBmpData = new BitmapData(this.stage.stageWidth-190, this.stage.stageHeight-100, true, 0xFFFFFFFF);
 			paintBmpData_Holder = new BitmapData(this.stage.stageWidth-190, this.stage.stageHeight-100, true, 0xFFFFFFFF);
 			paintBmpData_Undo = new BitmapData(this.stage.stageWidth-190, this.stage.stageHeight-100, true, 0xFFFFFFFF);
@@ -175,24 +189,26 @@
 			sizeButton_2 = new Sprite();
 			sizeButton_3 = new Sprite();		 
 			 
-//			ZoominButton = new Sprite();
-//			ZoomStatus = 0; 
-//			SelectionButton = new Sprite();
-//			SelectionOn = 0;
+			/* Sprite initialization and color fills for currently unused use cases Zoom and Selection.
+			ZoominButton = new Sprite();
+			ZoomStatus = 0; 
+			SelectionButton = new Sprite();
+			SelectionOn = 0;
 			 
-//			Fills new button with color
-//			ZoominButton.graphics.beginFill(0x000000);
-//			ZoominButton.graphics.drawRoundRect(0, 0, 70, 50, 6);
-//			ZoominButton.y = 10;
-//			ZoominButton.x = 120;
-//			 
-//			Fills new button with color
-//			SelectionButton.graphics.beginFill(0x0000FF);
-//			SelectionButton.graphics.drawRoundRect(0, 0, 70, 50, 6);
-//			SelectionButton.y = 120;
-//			SelectionButton.x = 120;	 
+			Fills new button with color
+			ZoominButton.graphics.beginFill(0x000000);
+			ZoominButton.graphics.drawRoundRect(0, 0, 70, 50, 6);
+			ZoominButton.y = 10;
+			ZoominButton.x = 120;
+			 
+			Fills new button with color
+			SelectionButton.graphics.beginFill(0x0000FF);
+			SelectionButton.graphics.drawRoundRect(0, 0, 70, 50, 6);
+			SelectionButton.y = 120;
+			SelectionButton.x = 120;
+			*/
  			 
-			// Color buttons to go in the color bar
+			// Color buttons to go in the color bar.
 			colorButton_0.graphics.beginFill(0x000000);
 			colorButton_0.graphics.drawRoundRect(0, 0, 70, 50,6);			
 			colorButton_0.y = 10;
@@ -246,7 +262,7 @@
 			colorIndicator.y = 540;
 			colorIndicator.x = 10;
 			
-			// Buttons to go in the toolbar
+			// Buttons to go in the toolbar.
 			saveButton.graphics.beginFill(0xF4F4F4);
 			saveButton.graphics.drawRoundRect(0,0,50,50,6);
 			saveButton.y = 5;
@@ -411,8 +427,8 @@
 			var sizeWrapper_1:Wrapper = new Wrapper(sizeButton_1);
 			var sizeWrapper_2:Wrapper = new Wrapper(sizeButton_2);
 			var sizeWrapper_3:Wrapper = new Wrapper(sizeButton_3);
-//			var zoomWrapper:Wrapper = new Wrapper(ZoominButton);
-// 			var selectWrapper:Wrapper = new Wrapper(SelectionButton);
+			// var zoomWrapper:Wrapper = new Wrapper(ZoominButton);
+			// var selectWrapper:Wrapper = new Wrapper(SelectionButton);
 			 		 
 			colorWrapper_0.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");hexColor=0xFF000000;setColor(0xFF000000);}, false, 0, true);									
 			colorWrapper_1.addEventListener(MouseEvent.CLICK, function(){trace("DOWN");hexColor=0xFFFF0000;setColor(0xFFFF0000);}, false, 0, true);	
@@ -438,8 +454,8 @@
 			sizeWrapper_1.addEventListener(TouchEvent.MOUSE_OVER, function(){trace("DOWN");size(5);}, false, 0, true);
 			sizeWrapper_2.addEventListener(TouchEvent.MOUSE_OVER, function(){trace("DOWN");size(10);}, false, 0, true);
 			sizeWrapper_3.addEventListener(TouchEvent.MOUSE_OVER, function(){trace("DOWN");size(15);}, false, 0, true);
-//			zoomWrapper.addEventListener(MouseEvent.MOUSE_DOWN, function(){Zoomdown();}, false, 0, true);
-//			selectWrapper.addEventListener(MouseEvent.CLICK, function(){Selectdown();}, false, 0, true);		
+			// zoomWrapper.addEventListener(MouseEvent.MOUSE_DOWN, function(){Zoomdown();}, false, 0, true);
+			// selectWrapper.addEventListener(MouseEvent.CLICK, function(){Selectdown();}, false, 0, true);		
 
 			colorBar.addChild(colorWrapper_0);
 			colorBar.addChild(colorWrapper_1);
@@ -471,6 +487,7 @@
 			
 			bInit = true;
 		}
+		
 		function setColor(color:uint):void
 		{
 			col = new ColorTransform((((color>>16) & 0xFF)/255), (((color>>8) & 0xFF)/255), (((color) & 0xFF)/255));
@@ -480,40 +497,43 @@
 			colorIndicator.graphics.endFill();
 		}
 		
-//		function Zoomdown():void
-//		{
-//			trace(ZoomStatus);
-//			//if Zoom is pressed, changes the color of the button to let the user know, and changes status to 1
-//			if (ZoomStatus == 0)
-//			{
-//				ZoominButton.graphics.beginFill(0x00ff00);
-//				ZoomStatus = 1;
-//			}
-//			//if Zoom has already been activated, deactivates it and changes color back to black
-//			else if (ZoomStatus == 1)
-//			{
-//				ZoominButton.graphics.beginFill(0x000000);
-//				ZoomStatus = 0;
-//			}
-//		}
-//		
-//		function Selectdown():void
-//		{
-//			trace(SelectionOn);
-//			//if selection is pressed when deactivated, activates it and changes the color
-//			if (SelectionOn == 0)
-//			{
-//				SelectionButton.graphics.beginFill(0xFF0000);
-//				SelectionOn = 1;
-//			}
-//			//if selection is already activated, deactivates it and changes color back
-//			else 
-//			{
-//				SelectionButton.graphics.beginFill(0x000000);
-//				SelectionOn = 0;
-//			}
-//		}
+		/* Unused function for Zoom down-clicks.
+		function zoomDown():void
+		{
+			trace(ZoomStatus);
+			// If Zoom is pressed, changes the color of the button to let the user know, and changes status to 1.
+			if (ZoomStatus == 0)
+			{
+				ZoominButton.graphics.beginFill(0x00ff00);
+				ZoomStatus = 1;
+			}
+			// If Zoom has already been activated, deactivates it and changes color back to black.
+			else if (ZoomStatus == 1)
+			{
+				ZoominButton.graphics.beginFill(0x000000);
+				ZoomStatus = 0;
+			}
+		}
+		*/
 		
+		/* Unused function for Select down-clicks.
+		function zelectDown():void
+		{
+			trace(SelectionOn);
+			// If selection is pressed when deactivated, activates it and changes the color.
+			if (SelectionOn == 0)
+			{
+				SelectionButton.graphics.beginFill(0xFF0000);
+				SelectionOn = 1;
+			}
+			// If selection is already activated, deactivates it and changes color back.
+			else 
+			{
+				SelectionButton.graphics.beginFill(0x000000);
+				SelectionOn = 0;
+			}
+		}
+		*/
 
 		function addBlob(id:Number, origX:Number, origY:Number):void
 		{
@@ -526,25 +546,24 @@
 			
 		}
 		
-// Logan: April 16
 		function saveBmp():void
 		{
 			trace("saving");
 			paintBmpData_Holder = paintBmpData.clone();
-			// if you have no SharedObject, get it
-			// make a byte array out of the bitmap data
-			// assign the byte array to a property on SharedObject data
-			// flush the SharedObject
+			// If you have no SharedObject, get it.
+			// Make a byte array out of the bitmap data.
+			// Assign the byte array to a property on SharedObject data.
+			// Flush the SharedObject.
 		}
 		
 		function loadBmp():void
 		{
 			trace("loading");
 			clear();
-			// if you have no SharedObject, get it
-			// assign the SharedObject data to a byte array
-			// load the byte array into the loader
-			// when the loader is finished with the data, draw it onto the canvas
+			// If you have no SharedObject, get it.
+			// Assign the SharedObject data to a byte array.
+			// Load the byte array into the loader.
+			// When the loader is finished with the data, draw it onto the canvas.
 			paintBmpData.draw(paintBmpData_Holder);
 		}
 		
@@ -575,7 +594,7 @@
 			{
 				var tuioobj:TUIOObject = TUIO.getObjectById(blobs[i].id);
 				
-				// if not found, then it must have died..
+				// If not found, then it must have died..
 				if(!tuioobj)
 				{
 					removeBlob(blobs[i].id);
@@ -596,10 +615,10 @@
 		
 		public function downEvent(e:TouchEvent):void
 		{
-			//save the current state of the canvas for undo purposes
+			// Save the current state of the canvas for undo purposes.
 			paintBmpData_Undo = paintBmpData.clone();
 			
-			// check to make sure non of the tools are active before adding the point to the canvas
+			// Check to make sure non of the tools are active before adding the point to the canvas.
 			if(sampleMode)
 			{
 				setColor(paintBmpData.getPixel(e.stageX-75,e.stageY-90));
@@ -646,13 +665,13 @@
 		{
 			var curPt:Point = parent.globalToLocal(new Point(e.stageX, e.stageY));
 			
-			//if this is the second point of the rectangle, record the point as curPt2 and draw the rectangle
+			// If this is the second point of the rectangle, record the point as curPt2 and draw the rectangle.
 //			if (ZoomStatus == 0 && SelectionOn == 2)
 //			{
 //				this.curPt2 = curPt;
 //				this.graphics.drawRect(Math.min(curPt1.x, curPt2.x), Math.min(curPt1.y, curPt2.y), Math.abs(curPt1.x - curPt2.x), Math.abs(curPt1.y - curPt2.y));	
 //			}
-			//if this is not a selection point, simply follow normal procedures
+			// If this is not a selection point, simply follow normal procedures.
 
 			removeBlob(e.ID);			
 				
@@ -670,7 +689,7 @@
 			if(lineMode) line();
 			if(eraseMode) erase();
 			if(sampleMode) sample();
-			// if the tool is being activated, turn the button green, if being deactivated change it back to white
+			// If the tool is being activated, turn the button green, if being deactivated change it back to white.
 			if(!fillMode)
 			{
 				fillButton.graphics.clear();
@@ -695,7 +714,7 @@
 			if(lineMode) line();
 			if(eraseMode) erase();
 			if(sampleMode) sample();
-			// if the tool is being activated, turn the button green, if being deactivated change it back to white
+			// If the tool is being activated, turn the button green, if being deactivated change it back to white.
 			if(!shapeMode)
 			{
 				shapeButton.graphics.clear();
@@ -720,7 +739,7 @@
 			if(shapeMode) shape();			
 			if(eraseMode) erase();
 			if(sampleMode) sample();
-			// if the tool is being activated, turn the button green, if being deactivated change it back to white
+			// If the tool is being activated, turn the button green, if being deactivated change it back to white.
 			if(!lineMode)
 			{
 				lineButton.graphics.clear();
@@ -746,7 +765,7 @@
 			if(shapeMode) shape();			
 			if(lineMode) line();
 			if(sampleMode) sample();
-			// if the tool is being activated, turn the button green, if being deactivated change it back to white
+			// If the tool is being activated, turn the button green, if being deactivated change it back to white.
 			if(!eraseMode)
 			{
 				eraseButton.graphics.clear();
@@ -776,7 +795,7 @@
 			if(shapeMode) shape();			
 			if(lineMode) line();
 			if(eraseMode) erase();
-			// if the tool is being activated, turn the button green, if being deactivated change it back to white
+			// If the tool is being activated, turn the button green, if being deactivated change it back to white.
 			if(!sampleMode)
 			{
 				sampleButton.graphics.clear();
@@ -798,7 +817,7 @@
 		public function size(bsize:int):void
 		{
 			brushSize=bsize;
-			// change the activated brush size button to green and reset all the others to white
+			// Change the activated brush size button to green and reset all the others to white.
 			if(bsize==5)
 			{
 				brush.graphics.clear();
