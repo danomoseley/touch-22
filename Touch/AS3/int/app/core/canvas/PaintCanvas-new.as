@@ -46,7 +46,7 @@ package app.core.canvas
 		private var col:ColorTransform;
 		private var hexColor:uint;
 		
-		/* Variables for currently unused use cases Zoom and Selection.
+		// Variables for currently unused use cases Zoom and Selection.
  		private var ZoomStatus:int;				// 0 or 1 depending on whether the zoom button is being pressed
 		private var SelectionOn:int;				// 0, 1, or 2 depending on the state of the selection process
 		private var curPt1:Point;
