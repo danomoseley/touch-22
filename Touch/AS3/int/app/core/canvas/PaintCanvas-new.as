@@ -93,7 +93,8 @@ package app.core.canvas{
 
 		
 		// PaintCanvas constructor. Mode booleans (is a line being drawn?) are set here.
-		public function PaintCanvas():void {
+		public function PaintCanvas():void
+		{
 			this.addEventListener(Event.ADDED_TO_STAGE, function(){addedToStage();}, false, 0, true);
 			brushSize = 10;
 			fillMode = false;
@@ -109,7 +110,8 @@ package app.core.canvas{
 		// Button objects and  buttons' wrappers of touch events' initializations.
 		// Adds wrappers to global workspace object.
 		// This is where all setup occurs.
-		public function setupButton(button:Sprite, x_coord:int, y_coord:int, label_text:String) {
+		public function setupButton(button:Sprite, x_coord:int, y_coord:int, label_text:String)
+		{
 			button.graphics.beginFill(0xF4F4F4);
 			button.graphics.drawRoundRect(0,0,50,50,6);
 			button.y = y_coord;
@@ -123,8 +125,10 @@ package app.core.canvas{
 			loadLabel.selectable = false;
 			button.addChild(loadLabel);
 		}
-		function addedToStage() {
-			if (bInit) {
+		function addedToStage()
+		{
+			if (bInit)
+			{
 				return;
 			}
 
@@ -324,7 +328,8 @@ package app.core.canvas{
 		// Use name: UChange
 		// Called by: The color buttons.
 		// Function: Changes the color of the brush to the one clicked on.
-		function setColor(color:uint):void {
+		function setColor(color:uint):void
+		{
 			col = new ColorTransform((((color>>16) & 0xFF)/255), (((color>>8) & 0xFF)/255), (((color) & 0xFF)/255));
 			colorIndicator.graphics.clear();
 			colorIndicator.graphics.beginFill(color);
@@ -369,9 +374,12 @@ package app.core.canvas{
 		// Use name:  UPaint
 		// Called by: Touching the screen.
 		// Function: Paints a blob of size 'brushSize' on the canvas.
-		function addBlob(id:Number, origX:Number, origY:Number):void {
-			for (var i=0; i<blobs.length; i++) {
-				if (blobs[i].id == id) {
+		function addBlob(id:Number, origX:Number, origY:Number):void
+		{
+			for (var i=0; i<blobs.length; i++)
+			{
+				if (blobs[i].id == id)
+				{
 					return;
 				}
 			}
@@ -382,7 +390,8 @@ package app.core.canvas{
 		// Use name: USave
 		// Called by: "Save" button.
 		// Function: Clones the current canvas into a dummy canvas holder.
-		function saveBmp():void {
+		function saveBmp():void
+		{
 			trace("saving");
 			paintBmpData_Holder = paintBmpData.clone();
 			// if you have no SharedObject, get it
@@ -394,7 +403,8 @@ package app.core.canvas{
 		// Use name: ULoad
 		// Called by: "Load" button.
 		// Function: Redraws the current canvas as the dummy (saved) canvas.
-		function loadBmp():void {
+		function loadBmp():void
+		{
 			trace("loading");
 			clear();
 			// if you have no SharedObject, get it
@@ -407,30 +417,39 @@ package app.core.canvas{
 		// Use name: UUndo
 		// Called by: "Undo" button.
 		// Function: Reverts to immediately previous canvas state.
-		function undo():void {
+		function undo():void
+		{
 			trace("undoing");
 			clear();
 			paintBmpData.draw(paintBmpData_Undo);
 		}
 
-		function removeBlob(id:Number):void {
-			for (var i=0; i<blobs.length; i++) {
-				if (blobs[i].id == id) {
+		function removeBlob(id:Number):void
+		{
+			for (var i=0; i<blobs.length; i++)
+			{
+				if (blobs[i].id == id)
+				{
 					blobs.splice(i, 1);
 					return;
 				}
 			}
 		}
-		function update(e:Event):void {
+		function update(e:Event):void
+		{
 			var pt = new Point(0,0);
 			var matrix1 = new Matrix();
-			for (var i:int = 0; i<blobs.length; i++) {
+			for (var i:int = 0; i<blobs.length; i++)
+			{
 				var tuioobj:TUIOObject = TUIO.getObjectById(blobs[i].id);
 
 				// if not found, then it must have died..
-				if (!tuioobj) {
+				if (!tuioobj)
+				{
 					removeBlob(blobs[i].id);
-				} else if (parent != null) {
+				}
+				else if (parent != null)
+				{
 					var localPt:Point = parent.globalToLocal(new Point(tuioobj.x, tuioobj.y));
 					var m:Matrix = new Matrix();
 					m.translate(localPt.x-75, localPt.y-90);
@@ -446,25 +465,33 @@ package app.core.canvas{
 		}
 
 		// This the what happens when the user presses a finger against the touch pane.
-		public function downEvent(e:TouchEvent):void {
+		public function downEvent(e:TouchEvent):void
+		{
 			//save the current state of the canvas for undo purposes
 			paintBmpData_Undo = paintBmpData.clone();
 
 			// check to make sure non of the tools are active before adding the point to the canvas
-			if (sampleMode) {
+			if (sampleMode)
+			{
 				setColor(paintBmpData.getPixel(e.stageX-75,e.stageY-90));
 				sample();
 			}
 			// Essentially a component of UFill. This is where the magic happens.
-			if (fillMode) {
+			else if (fillMode)
+			{
 				paintBmpData.floodFill(e.stageX-75,e.stageY-90,hexColor);
 			// Essentially a component of ULine. This is where the magic happens.
-			} else if (lineMode) {
-				if (!startSet) {
+			}
+			else if (lineMode)
+			{
+				if (!startSet)
+				{
 					startX = e.stageX-75;
 					startY = e.stageY-90;
 					startSet = true;
-				} else {
+				}
+				else
+				{
 					var m:Matrix = new Matrix();
 					m.translate(e.stageX-75, e.stageY-90);
 					brush = new Sprite();
@@ -478,12 +505,16 @@ package app.core.canvas{
 					paintBmpData.draw(brush, m, col, 'normal');
 				}
 			// Essentially a component of UShapes. This is where the magic happens.
-			} else if (shapeMode) {
+			}
+			else if (shapeMode)
+			{
 				brush = new Sprite();
 				brush.graphics.beginFill(0xFFFFFF);
 				brush.graphics.drawRect(e.stageX-50-75, e.stageY-50-90, 100, 100);
 				paintBmpData.draw(brush, m, col, 'normal');
-			} else {
+			}
+			else
+			{
 				var curPt:Point = parent.globalToLocal(new Point(e.stageX, e.stageY));
 				addBlob(e.ID, curPt.x, curPt.y);
 			}
@@ -491,7 +522,8 @@ package app.core.canvas{
 		}
 
 		// This the what happens when the user raises a finger from the touch pane.
-		public function upEvent(e:TouchEvent):void {
+		public function upEvent(e:TouchEvent):void
+		{
 			var curPt:Point = parent.globalToLocal(new Point(e.stageX, e.stageY));
 
 			//if this is the second point of the rectangle, record the point as curPt2 and draw the rectangle
@@ -510,7 +542,8 @@ package app.core.canvas{
 		// Use name: UClear
 		// Called by: "Clear" button.
 		// Function: Clears the canvas of all painting marks.
-		public function clear():void {
+		public function clear():void
+		{
 			trace("Clear");
 			paintBmpData.fillRect(paintBmpData.rect,0xFFFFFFFF);
 		}
@@ -518,27 +551,35 @@ package app.core.canvas{
 		// Use name: UFill
 		// Called by: Touching the canvas after having touched the "Fill" button.
 		// Function: Fills the amoeba of touched pixel's color with the current brush color.
-		public function fill():void {
-			if (shapeMode) {
+		public function fill():void
+		{
+			if (shapeMode)
+			{
 				shape();
 			}
-			if (lineMode) {
+			if (lineMode)
+			{
 				line();
 			}
-			if (eraseMode) {
+			if (eraseMode)
+			{
 				erase();
 			}
-			if (sampleMode) {
+			if (sampleMode)
+			{
 				sample();
 			}// if the tool is being activated, turn the button green, if being deactivated change it back to white
-			if (!fillMode) {
+			if (!fillMode)
+			{
 				fillButton.graphics.clear();
 				fillButton.graphics.beginFill(0x80FF80);
 				fillButton.graphics.drawRoundRect(0,0,50,50,6);
 				fillButton.graphics.endFill();
 				fillMode = true;
 				trace("fillMode enabled");
-			} else {
+			}
+			else
+			{
 				fillButton.graphics.clear();
 				fillButton.graphics.beginFill(0xFFFFFF);
 				fillButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -551,27 +592,35 @@ package app.core.canvas{
 		// Use name: UShapes
 		// Called by: Touching the canvas after having touched the "Shape" button.
 		// Function: Lays a rectangle of the current brush color centered on the touch location.
-		public function shape():void {
-			if (fillMode) {
+		public function shape():void
+		{
+			if (fillMode)
+			{
 				fill();
 			}
-			if (lineMode) {
+			if (lineMode)
+			{
 				line();
 			}
-			if (eraseMode) {
+			if (eraseMode)
+			{
 				erase();
 			}
-			if (sampleMode) {
+			if (sampleMode)
+			{
 				sample();
 			}// if the tool is being activated, turn the button green, if being deactivated change it back to white
-			if (!shapeMode) {
+			if (!shapeMode)
+			{
 				shapeButton.graphics.clear();
 				shapeButton.graphics.beginFill(0x80FF80);
 				shapeButton.graphics.drawRoundRect(0,0,50,50,6);
 				shapeButton.graphics.endFill();
 				shapeMode = true;
 				trace("shapeMode enabled");
-			} else {
+			}
+			else
+			{
 				shapeButton.graphics.clear();
 				shapeButton.graphics.beginFill(0xFFFFFF);
 				shapeButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -584,27 +633,35 @@ package app.core.canvas{
 		// Use name: ULine
 		// Called by: Touching the canvas at start and end locations after having touched the "Line" button.
 		// Function: Lays a line of the current brush color from the start to end points.
-		public function line():void {
-			if (fillMode) {
+		public function line():void
+		{
+			if (fillMode)
+			{
 				fill();
 			}
-			if (shapeMode) {
+			if (shapeMode)
+			{
 				shape();
 			}
-			if (eraseMode) {
+			if (eraseMode)
+			{
 				erase();
 			}
-			if (sampleMode) {
+			if (sampleMode)
+			{
 				sample();
 			}// if the tool is being activated, turn the button green, if being deactivated change it back to white
-			if (!lineMode) {
+			if (!lineMode)
+			{
 				lineButton.graphics.clear();
 				lineButton.graphics.beginFill(0x80FF80);
 				lineButton.graphics.drawRoundRect(0,0,50,50,6);
 				lineButton.graphics.endFill();
 				lineMode = true;
 				trace("lineMode enabled");
-			} else {
+			}
+			else
+			{
 				lineButton.graphics.clear();
 				lineButton.graphics.beginFill(0xFFFFFF);
 				lineButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -614,20 +671,26 @@ package app.core.canvas{
 				trace("lineMode disabled");
 			}
 		}
-		public function erase():void {
-			if (fillMode) {
+		public function erase():void
+		{
+			if (fillMode)
+			{
 				fill();
 			}
-			if (shapeMode) {
+			if (shapeMode)
+			{
 				shape();
 			}
-			if (lineMode) {
+			if (lineMode)
+			{
 				line();
 			}
-			if (sampleMode) {
+			if (sampleMode)
+			{
 				sample();
 			}// if the tool is being activated, turn the button green, if being deactivated change it back to white
-			if (!eraseMode) {
+			if (!eraseMode)
+			{
 				eraseButton.graphics.clear();
 				eraseButton.graphics.beginFill(0x80FF80);
 				eraseButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -637,7 +700,9 @@ package app.core.canvas{
 				setColor(0xFFFFFFFF);
 				eraseMode = true;
 				trace("eraseMode enabled");
-			} else {
+			}
+			else
+			{
 				eraseButton.graphics.clear();
 				eraseButton.graphics.beginFill(0xFFFFFF);
 				eraseButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -648,27 +713,35 @@ package app.core.canvas{
 				trace("eraseMode disabled");
 			}
 		}
-		public function sample():void {
-			if (fillMode) {
+		public function sample():void
+		{
+			if (fillMode)
+			{
 				fill();
 			}
-			if (shapeMode) {
+			if (shapeMode)
+			{
 				shape();
 			}
-			if (lineMode) {
+			if (lineMode)
+			{
 				line();
 			}
-			if (eraseMode) {
+			if (eraseMode)
+			{
 				erase();
 			}// if the tool is being activated, turn the button green, if being deactivated change it back to white
-			if (!sampleMode) {
+			if (!sampleMode)
+			{
 				sampleButton.graphics.clear();
 				sampleButton.graphics.beginFill(0x80FF80);
 				sampleButton.graphics.drawRoundRect(0,0,50,50,6);
 				sampleButton.graphics.endFill();
 				sampleMode = true;
 				trace("sampleMode enabled");
-			} else {
+			}
+			else
+			{
 				sampleButton.graphics.clear();
 				sampleButton.graphics.beginFill(0xFFFFFF);
 				sampleButton.graphics.drawRoundRect(0,0,50,50,6);
@@ -677,10 +750,12 @@ package app.core.canvas{
 				trace("sampleMode disabled");
 			}
 		}
-		public function size(bsize:int):void {
+		public function size(bsize:int):void
+		{
 			brushSize=bsize;
 			// change the activated brush size button to green and reset all the others to white
-			if (bsize==5) {
+			if (bsize==5)
+			{
 				brush.graphics.clear();
 				sizeButton_1.graphics.clear();
 				sizeButton_1.graphics.beginFill(0x80FF80);
@@ -695,7 +770,8 @@ package app.core.canvas{
 				sizeButton_3.graphics.drawCircle(0,0,15);
 				sizeButton_3.graphics.endFill();
 			}
-			if (bsize==10) {
+			if (bsize==10)
+			{
 				brush.graphics.drawCircle(0,0,brushSize);
 				sizeButton_1.graphics.clear();
 				sizeButton_1.graphics.beginFill(0xFFFFFF);
@@ -711,7 +787,8 @@ package app.core.canvas{
 				sizeButton_3.graphics.endFill();
 
 			}
-			if (bsize==15) {
+			if (bsize==15)
+			{
 				brush.graphics.drawCircle(0,0,brushSize);
 				sizeButton_1.graphics.clear();
 				sizeButton_1.graphics.beginFill(0xFFFFFF);
@@ -728,11 +805,14 @@ package app.core.canvas{
 			}
 		}
 
-		public function moveHandler(e:TouchEvent):void {
+		public function moveHandler(e:TouchEvent):void
+		{
 		}
-		public function rollOverHandler(e:TouchEvent):void {
+		public function rollOverHandler(e:TouchEvent):void
+		{
 		}
-		public function rollOutHandler(e:TouchEvent):void {
+		public function rollOutHandler(e:TouchEvent):void
+		{
 		}
 	}
 }

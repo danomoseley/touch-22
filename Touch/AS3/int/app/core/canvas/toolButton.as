@@ -6,7 +6,8 @@
 
 	public dynamic class toolButton extends Sprite
 	{
-		public function toolButton(x_coord:int, label_text:String):void {
+		public function toolButton(x_coord:int, label_text:String):void
+		{
 			var smallLabelFormat:TextFormat=new TextFormat();
 			smallLabelFormat.align=TextFormatAlign.CENTER;
 
